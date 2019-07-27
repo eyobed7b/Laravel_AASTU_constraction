@@ -11,8 +11,8 @@
                 
                 </div>
                 
-                <div class = "row" style="background:white;">
-                        
+                <div class = "row col-lg-12 col-sm-12 col-md-12"  style="background:white; marging:10px">
+                        <a href="/projects/create" class="pull-right btn btn-default btn-sm"> Add Project</a>       
                         @foreach($company->projects as $project)
                     <div class = "col-lg-4">
                 <h3>{{$project->name}}</h3>
@@ -37,8 +37,36 @@
             <h4>Actions</h4>
             <ol class="list-unstyled">
             <li><a href="/companies/{{$company->id}}/edit">Edit</a></li>
-            <li><a href="#">Delete</a></li>
-            <li><a href="#">Add new User</a></li>
+            <li><a href="/Projects/create"> Add project </a></li>
+            <li><a href="/companies/create"> create new company </a></li>
+            <li><a href="/companies/"> My  company </a></li>
+            
+            <br>
+             
+            <li><a href = "#"
+                      onclick = "var result = confirm('Are you sure you wish to delete this project');
+                         if( result )
+                         {
+                           //  alert('hello');
+                             event.preventDefault();
+                             document.getElementById('delete-form').submit();
+                            // document.write('deleteing');'
+                            alert('hello');
+                         }
+
+                      ">
+                      Delete
+                
+                </a>
+            <label id = "lb"></label>
+            <form id ="delete-form" action = "{{route('companies.destroy',[$company->id])}}" method="POST" style="display:none">
+                  <input type="hidden" name="_method" value="delete">
+                  {{csrf_field()}}
+                </form>
+
+            </li>
+
+            
             
             </ol>
             

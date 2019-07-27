@@ -6,34 +6,32 @@
        
                 
                 <div class = "row col-md-12 col-lg-12 col-sm-12" style="background:white; mergin:10px;">
-                         <form method="post" action="{{route('companies.store')}}">
+                         <form method="post" action="{{route('companies.update',[$company->id])}}">
                              {{csrf_field()}}
-                             
+                             <input type="hidden" name="_method" value="put">
                        <div class="form_group">
                            <label for="company_name">Name<span class="required"></span></label>
                          <input placeholder="Enter your Name"
-                         type="text"
                          id="company_name"
                          required
                          name="name"
                          spellcheck="false"
                          class="form-control"
-                        
+                         value="{{$company->name}}"
                          >
 
                        </div>
 
                        <div class="form_group">
                             <label for="company_content">Description</label>
-                          <textarea  placeholder = "Enter Description"
+                          <textarea placeholder="Enter Description"
                           style="resize:vertical;"
                           id="company_content"
                           required
                           name="description"
                           spellcheck="false"
-                          
                           class="form-control autosize-target text-left">
-                          </textarea>
+                          {{$company->description}}</textarea>
                           <div class="form-group">
                               <input type="submit" class="btn btn-primary" value="submit">
 
@@ -53,7 +51,8 @@
     <div class="sidebar-module">
             <h4>Actions</h4>
             <ol class="list-unstyled">
-            <li><a href="/companies">My companies</a></li>
+            <li><a href="/companies/{{$company->id}}">View company</a></li>
+            <li><a href="/companies">All companies</a></li>
         
             
             </ol>

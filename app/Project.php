@@ -24,4 +24,10 @@ class Project extends Model
          public function Users(){
        return $this->belongsToMany('App/User'); 
       }
+
+      public function comments()
+      {
+
+          return $this->morphTo('App/comment','commentable');
+      }
 }

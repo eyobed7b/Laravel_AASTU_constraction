@@ -16,10 +16,14 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
+Route::middleware(['auth'])->group(function(){
+    Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('companies','CompaniesController');
-Route::resource('Projects','ProjectsController');
+Route::resource('projects','ProjectsController');
+Route::get('projects/craete/{{company_id}}','ProjectsController@create');
 Route::resource('Roles','RolessController');
-Route::resource('Tasks','TasksController');
+Route::resource('tasks','TasksController');
 Route::resource('Users','UsersController');
+Route::resource('comments','CommentsController');
+});
+

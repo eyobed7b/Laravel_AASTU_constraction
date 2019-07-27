@@ -6,6 +6,7 @@ use App\Company;
 
 
 use Illuminate\Http\Request;
+use Illuminate\support\Facades\Auth;
 
 class CompaniesController extends Controller
 {
@@ -16,11 +17,16 @@ class CompaniesController extends Controller
      */
     public function index()
     {
-       $compaines = company::all();
-       	$data = array('title'=>'compaines','compaines'=>$compaines);
+        if(Auth::check())
+        {
+            $compaines = company::where('user_id', Auth::user()->id)->get();
+            $data = array('title'=>'compaines','compaines'=>$compaines);
+      
+      
+         return view('companies/index')->with($data);
+        }
+return view('auth.login');
      
-        //return $compaines;   ['companies'=> $compaines] 
-        return view('companies/index')->with($data);
      // return view('companies/index', ['companies'=> $compaines] );
     }
 
@@ -31,7 +37,7 @@ class CompaniesController extends Controller
      */
     public function create()
     {
-        //
+        return view('companies.create');
     }
 
     /**
@@ -42,7 +48,23 @@ class CompaniesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if(Auth::check()){
+            $company = company::create([
+                'name'=>$request->input('name'),
+                'description'=>$request->input('description'),
+        
+               
+               
+             'user_id'=>$request->user()->id
+               
+            ]);
+
+            if($company)
+            {
+                return redirect()->route('companies.show',['company'=>$company->id])->with('succes','new company is added');
+            }
+        }
+        return back()->withinput()->with('error','can not create new company');  
     }
 
     /**
@@ -100,6 +122,10 @@ class CompaniesController extends Controller
      */
     public function destroy(Company $company)
     {
-        //
+        $findCompany = company::find($company->id);
+        if($findCompany->delete()){
+            return redirect()->route('companies.index')->with('success','company deleted successfuly');
+        }
+        return back()->withInput()->with('error','company could not be deleted');
     }
 }

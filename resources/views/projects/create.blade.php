@@ -6,7 +6,8 @@
        
                 
                 <div class = "row col-md-12 col-lg-12 col-sm-12" style="background:white; mergin:10px;">
-                         <form method="post" action="{{route('companies.store')}}">
+                  <h1>Create new project</h1>
+                  <form method="post" action="{{route('projects.store')}}">
                              {{csrf_field()}}
                              
                        <div class="form_group">
@@ -18,6 +19,13 @@
                          name="name"
                          spellcheck="false"
                          class="form-control"
+                        
+                         >
+                         <input placeholder="Enter your Name"
+                         type="hidden"
+                        
+                         name="company_id"
+                         value="{{$company_id}}"
                         
                          >
 
@@ -53,7 +61,7 @@
     <div class="sidebar-module">
             <h4>Actions</h4>
             <ol class="list-unstyled">
-            <li><a href="/companies">My companies</a></li>
+            <li><a href="/projects">My projects</a></li>
         
             
             </ol>
