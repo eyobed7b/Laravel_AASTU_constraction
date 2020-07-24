@@ -1,4 +1,4 @@
-<nav class="navbar navbar-defualt nav-static-top navbar-inverse">
+<nav class="navbar navbar-default nav-static-top navbar-inverse">
     <div class="container">
         <div class="navbar-header">
 
@@ -12,7 +12,7 @@
 
             <!-- Branding Image -->
             <a class="navbar-brand" href="{{ url('/') }}">
-              LARAVEL
+              AASTU project managment
             </a>
         </div>
 
@@ -31,64 +31,35 @@
 
              @else
             
-             <li><a href="{{route('companies.index')}}">My companies</a></li>
-             <li><a href="{{route('projects.index')}}">Projects</a></li>
+             <li><a href="{{route('companies.index')}}" ><img src="builnging.png"> companies</a></li>
+             <li><a href="{{route('projects.index')}}"><img src="case .png">Projects</a></li>
              <li><a href="{{route('tasks.index')}}">Tasks</a></li>
-                <li class=" dropdown">
-                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                        {{ Auth::user()->name }} <span class="caret"></span>
-                    </a>
 
-                    <ul class="dropdown-menu"   role="menu">
-                        <li>
-                     
-                                <a href="{{route('logout')}}"
-                                onclick="event.preventDefault();
-                                              document.getElementById('logout-form').submit();">
-                                Logout
-                             </a>
-     
-                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                 @csrf
-                             </form>
+             @if(Auth::user()->roles == 1)
 
-                        </li>
-                    
-                    </ul>
-                </li>
+             <li class="dropdown">
+                <a  class="dropdown-toggle" href="#" role="button" 
+                    data-toggle="dropdown"  aria-expanded="false" >
+                    Admin <span class="caret"></span>
+                </a>
+
+                <ul class="dropdown-menu"  role="menu">
+                    <li><a href="{{route('tasks.index')}}">All Userd</a></li>
+                    <li><a href="{{route('companies.index')}}" ><img src="builnging.png">All companies</a></li>
+                    <li><a href="{{route('projects.index')}}"><img src="case .png">All Projects</a></li>
+                  <li><a href="{{route('tasks.index')}}">All Tasks</a></li>
+                
+                </ul>
+            </li>
+
+             @endif
+                
             @endguest
 
            
              
             </ul>
-         <!--   <ul class = "nav navbar-nav navbar-right">
-      <li><a href = "/posts/create">Create post</a></li>
-
-            </ul> -->
-        <!--    <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-                <div class="container">
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
-                    </a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-    --
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent"> -->
-                        <!-- Left Side Of Navbar -->
-              <!--          <ul class="navbar-nav mr-auto">
-    
-                        </ul>  -->
-    
-                        <!-- Right Side Of Navbar -->
-                <!--        <ul class="navbar-nav ml-auto"> -->
-                            <!-- Authentication Links -->
-                        
-                  <!--      </ul>
-                    </div>
-                </div>
-            </nav> -->
-            <!-- Rig-ht Side Of Navbar -->
+         
         
         </div>
     </div>

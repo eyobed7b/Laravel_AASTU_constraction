@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\comments_tabl;
+use App\Comment;
 use Illuminate\Http\Request;
 use Illuminate\support\Facades\Auth;
 
@@ -11,12 +11,19 @@ class CommentsController extends Controller
     * Display a listing of the resource.
     *
     * @return \Illuminate\Http\Response
+
+
     */
-   public function index()
+         
+    public function adduser(){
+        
+    }
+
+     public function index()
    {
        if(Auth::check())
        {
-           $compaines = comment::where('user_id', Auth::user()->id)->get();
+           $compaines = Comment::where('user_id', Auth::user()->id)->get();
            $data = array('title'=>'compaines','compaines'=>$compaines);
      
      
@@ -46,15 +53,12 @@ return view('auth.login');
    public function store(Request $request)
    {
        if(Auth::check()){
-           $comment = comments_tabl::create([
+           $comment = comment::create([
                'body'=>$request->input('body'),
                'url'=>$request->input('url'),
-               ' commentable_id'=>$request->input(' commentable_id'), 
-               ' commentable_type'=>$request->input(' commentable_type'), 
-       
-              
-              
-          //  'user_id'=>$request->user()->id
+               'commentable_id'=>$request->input('commentable_id'), 
+               'commentable_type'=>$request->input('commentable_type'), 
+            'user_id'=>Auth::user()->id
               
            ]);
 
@@ -72,7 +76,7 @@ return view('auth.login');
     * @param  \App\comment  $comment
     * @return \Illuminate\Http\Response
     */
-   public function show(comment $comment)
+   public function show(Comment $comment)
    {
       $comment = comment::find($comment->id);
 //$projects = project::where('comment_id',$comment->id);
@@ -88,7 +92,7 @@ return view('auth.login');
     * @param  \App\comment  $comment
     * @return \Illuminate\Http\Response
     */
-   public function edit(comment $comment)
+   public function edit(Comment $comment)
    {
        $comment = comment::find($comment->id);
        return view('companies.edit',['comment'=>$comment]);
@@ -101,7 +105,7 @@ return view('auth.login');
     * @param  \App\comment  $comment
     * @return \Illuminate\Http\Response
     */
-   public function update(Request $request, comment $comment)
+   public function update(Request $request, Comment $comment)
    {
        $commentUpdate = comment::where('id',$comment->id)->update([
            'name'=>$request->input('name'),
@@ -119,7 +123,7 @@ return view('auth.login');
     * @param  \App\comment  $comment
     * @return \Illuminate\Http\Response
     */
-   public function destroy(comment $comment)
+   public function destroy(Comment $comment)
    {
        $findcomment = comment::find($comment->id);
        if($findcomment->delete()){

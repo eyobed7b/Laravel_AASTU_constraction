@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
 use Illuminate\Http\Request;
+use App\User;
 
-class UsersConteroller extends Controller
+class UsersController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,10 @@ class UsersConteroller extends Controller
      */
     public function index()
     {
-        //
+        $user = User::all();
+        $data = array('Users'=>'users','users'=> $user);
+       // $data = array('Users'=>'user','user'=>$user);
+        return view('PM/index')->With($data);
     }
 
     /**
@@ -41,44 +44,54 @@ class UsersConteroller extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\User  $user
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show(User $user)
     {
-        //
+        $users = User::find($user->id);
+       return view ('PM.show',['user'=>$users]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\User  $user
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit(User $user)
     {
-        //
+        $pm = User::find($user->email);
+        return view('PM.index',['Users'=>$pm]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\User  $user
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, User $user)
     {
-        //
+        $userUpdate = User::where('email',$request->input('email'))->update([
+            'role_id'=>$request->input('name'),
+           
+        ]);
+        if($userUpdate){
+            $pm = User::find('role_id',2);
+            return redirect()->route('PM.index',['pm'=>$pm->name])->with('succes','Project manager is added succesfully');
+        }
+         return back()->withinput();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\User  $user
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy($id)
     {
         //
     }

@@ -10,14 +10,23 @@ class Company extends Model
           'name',
           'description', 
           'company_id',
-          'user_id',];
+          'user_id',
+          'office_id'
+          ];
+
           
           public function Users(){
-         return $this->belongsTo('App\User'); 
+         return $this->belongsToMany('App\User'); 
         }
-    
+        public function office(){
+            return $this->belongsTo('App\Office'); 
+           }
         public function Projects(){
              return $this->hasMany('App\Project'); 
             }
+          
+            public function comments(){
+               return $this->morphMany('App\Comment','commentable'); 
+              }
      
 }

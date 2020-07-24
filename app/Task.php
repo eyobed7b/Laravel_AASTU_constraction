@@ -20,17 +20,20 @@ class Task extends Model
      }
 
        public function Projec(){
-      return $this->belongsTo('App/Project'); 
+      return $this->belongsTo('App\Project'); 
      }
 
        public function Company(){
-      return $this->belongsTo('App/Company'); 
+      return $this->belongsTo('App\Company'); 
      }
 
        public function Users(){
-      return $this->belongsToMany('App/User'); 
+      return $this->belongsToMany('App\User'); 
      }
         public function Projects(){
-      return $this->belongsToMany('App/Project'); 
+      return $this->belongsToMany('App\Project'); 
+     }
+     public function comments(){
+      return $this->morphMany('App\Comment','commentable'); 
      }
 }

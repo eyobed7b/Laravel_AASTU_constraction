@@ -11,7 +11,10 @@ class Project extends Model
         'description',
         'company_id',
         'user_id',
+        'VPM_confirm',
+        'PM_confirm',
         'days',
+        'letter_position',
         ];
  
    
@@ -19,15 +22,16 @@ class Project extends Model
       
  
         public function Company(){
-       return $this->belongsTo('App/Company'); 
+       return $this->belongsTo('App\Company'); 
       }
          public function Users(){
-       return $this->belongsToMany('App/User'); 
+       return $this->belongsToMany('App\User'); 
       }
 
-      public function comments()
-      {
-
-          return $this->morphTo('App/comment','commentable');
-      }
+      public function comments(){
+        return $this->morphMany('App\Comment','commentable'); 
+       }
+       public function ReplayLetter(){
+        return $this->belongsTo('App\ReplayLetter'); 
+       }
 }

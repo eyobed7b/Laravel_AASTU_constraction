@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="panel panel-primart">
+            <div class="panel panel-primary">
                 <div class="panel-header">Login</div>
 
                 <div class="panel-body">

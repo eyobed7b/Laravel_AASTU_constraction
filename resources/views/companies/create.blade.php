@@ -34,6 +34,18 @@
                           
                           class="form-control autosize-target text-left">
                           </textarea>
+                          <label>Select  office organizer</label>
+                          <select name="office_no" class="form-control">
+                              @foreach($users as $user)
+                        <option value="{{$user->id}}">
+
+                         <pre>{{$user->first_name}}  {{$user->last_name}}</pre> 
+
+                        </option>
+
+                        @endforeach
+
+                      </select>
                           <div class="form-group">
                               <input type="submit" class="btn btn-primary" value="submit">
 

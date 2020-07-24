@@ -4,18 +4,28 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Comments_tabl extends Model
+class Comment extends Model
 {
    protected  $fillable = [
        'body',
        'url',
        'user_id',
        'commentable_id',
-        'commentable_type',];
+       'commentable_type',];
 
         public function commentable()
         {
 
             return $this->morphTo();
         }
+
+
+        public function user()
+        {
+
+            return $this->hasOne('\App\user','id','user_id');
+        }
 }
+
+
+

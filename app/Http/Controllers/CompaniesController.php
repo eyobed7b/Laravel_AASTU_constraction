@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Company;
+use App\User;
+use App\office;
+
 
 
 use Illuminate\Http\Request;
 use Illuminate\support\Facades\Auth;
+use Illuminate\support\Facades\DB;
 
 class CompaniesController extends Controller
 {
@@ -15,15 +19,60 @@ class CompaniesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     public function adduser(Request $request ){
+       $company = Company::find($request->input('company_id'));
+         if(Auth::user()->id)
+       {
+
+        $user = User::where('email' ,$request->input('email') )->first();
+        
+
+        if($user)
+        {
+            $user_role = user::where('email',$request->input('email'))->update([
+                'role_id'=> 8,
+            ]);
+          
+            $company->Users()->attach($user->id);
+    
+            return redirect()->route('companies.show',['company'=>$company->id])
+            ->with('succes',$request->input('email') .'new user is added to the company');
+        }
+
+        
+       }
+       return redirect()->route('companies.show',['company'=>$company->id])
+       ->with('error','error adding user to the company');
+
+     }
+
     public function index()
     {
         if(Auth::check())
         {
-            $compaines = company::where('user_id', Auth::user()->id)->get();
-            $data = array('title'=>'compaines','compaines'=>$compaines);
-      
-      
-         return view('companies/index')->with($data);
+                  
+            if(Auth::user()->role_id == 4 || Auth::user()->role_id == 1)
+            {
+                $compaines = company::all();
+                $data = array('title'=>'compaines','compaines'=>$compaines);
+                return view('companies/index')->with($data);
+            }else if(Auth::user()->role_id == 7 ){
+                $compaines = DB::table('offices')->join('companies','offices.id','companies.office_id')
+               ->join('users','users.id','offices.userOrg_id')->where('offices.userOrg_id',Auth::user()->id)
+                ->select('companies.name','companies.id')->get();
+//return  $compaines;
+                return view('companies.index',['compaines'=>  $compaines,'title'=>'Companies']);
+            }else if(Auth::user()->role_id == 9){
+                $compaines = DB::table('company_user')
+                ->join('companies','company_user.company_id','companies.id')->where('company_user.user_id',Auth::user()->id)
+                 ->select('companies.name','companies.id')->get();
+ //return  $compaines;
+                 return view('companies.index',['compaines'=>  $compaines,'title'=>'Companies']);
+            }
+            
+
+         
         }
 return view('auth.login');
      
@@ -37,7 +86,14 @@ return view('auth.login');
      */
     public function create()
     {
-        return view('companies.create');
+        $users = user::all();
+        $offices = office::all();
+        $users = DB::table('users')->join('offices','offices.userOrg_id','users.id')
+                    ->select('users.first_name','users.last_name','offices.id')->get();
+                  
+    
+   
+        return view('companies.create',['users'=>$users]);
     }
 
     /**
@@ -52,7 +108,7 @@ return view('auth.login');
             $company = company::create([
                 'name'=>$request->input('name'),
                 'description'=>$request->input('description'),
-        
+                'office_id'=>$request->input("office_no"),
                
                
              'user_id'=>$request->user()->id
@@ -75,11 +131,11 @@ return view('auth.login');
      */
     public function show(Company $company)
     {
+       
        $company = company::find($company->id);
-//$projects = project::where('company_id',$company->id);
-       //return $projects;
-       //$data = array('title'=>'companyi','companyi'=>$companyi);
       
+    
+    
    return view('companies.show',['company'=>$company]);//,['projects'=>$projects]);
     }
 
@@ -91,6 +147,7 @@ return view('auth.login');
      */
     public function edit(Company $company)
     {
+        
         $company = company::find($company->id);
         return view('companies.edit',['company'=>$company]);
     }

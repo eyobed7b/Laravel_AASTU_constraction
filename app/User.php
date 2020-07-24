@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','first_name','middle_nmae','last_name','city','role_id'
+        'name', 'email', 'password','first_name','last_name','city','role_id'
     ];
 
     /**
@@ -33,22 +33,24 @@ class User extends Authenticatable
      *
      * @var array
      */
+   
+
      public function tasks(){
-      return $this->hasMany('App/Task'); 
+      return $this->hasMany('App\Task'); 
      }
 
-       public function Comments(){
-      return $this->hasMany('App/Comment'); 
+       public function comments(){
+      return $this->morphMany('App\Comment','commentable'); 
      }
        public function Role(){
-      return $this->belongsTo('App/Role'); 
+      return $this->belongsTo('App\Role'); 
      }
        public function Companies(){
-      return $this->hasMany('App/Company'); 
+      return $this->belongsToMany('App\Company'); 
      }
 
  public function Task(){
-      return $this->belongsToMany('App/Task'); 
+      return $this->belongsToMany('App\Task'); 
      }
 
     protected $casts = [
